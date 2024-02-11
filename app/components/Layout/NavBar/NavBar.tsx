@@ -70,15 +70,6 @@ export function NavBar() {
         } transition-all duration-500 ease-in-out block overflow-hidden fixed animate-sideways-once h-screen bg-black text-white pt-8 z-40 top-0 right-0`}
       >
         <div className="relative flex flex-col-reverse sm:flex-col gap-2">
-          <div className="h-[180px] w-[140px] overflow-hidden sm:h-auto sm:w-auto mx-auto">
-            <Image
-              className="mx-auto z-10"
-              src="https://static.wixstatic.com/media/503ea4_cb7ebc8a601749f098164d92ec7aa441~mv2.jpg/v1/fill/w_480,h_622,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/503ea4_cb7ebc8a601749f098164d92ec7aa441~mv2.jpg"
-              width={240}
-              height={0}
-              alt="Talisa Kidd"
-            />
-          </div>
           <h2 className="text-center text-2xl sm:text-[120px] z-20 sm:mt-[-150px]">
             TALI$A KIDD
           </h2>

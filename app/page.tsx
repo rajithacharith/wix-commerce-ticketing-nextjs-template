@@ -2,6 +2,7 @@ import { getWixClient } from '@app/hooks//useWixClientServer';
 import { wixEvents } from '@wix/events';
 import { products } from '@wix/stores';
 import { HomeScreen } from '@app/components/HomeScreen/HomeScreen';
+import { TicketDefinitionExtended } from './types/ticket';
 
 export default async function Home() {
   const wixClient = await getWixClient();
@@ -29,6 +30,7 @@ export default async function Home() {
   } catch (e) {}
 
   let events: wixEvents.Event[] = [];
+  let tickets: TicketDefinitionExtended[] = [];
   try {
     events = (
       await wixClient.wixEvents.queryEventsV2({
@@ -42,8 +44,22 @@ export default async function Home() {
         },
       })
     ).events!;
+
+    tickets = (await wixClient.checkout.queryAvailableTickets({
+      filter: { eventId: "dc4790d0-bfad-46d9-9f21-71600878ffbd" },
+      offset: 0,
+      limit: 100,
+      sort: 'orderIndex:asc',
+    })).definitions?.map((ticket) => ({
+      ...ticket,
+      canPurchase:
+        ticket.limitPerCheckout! > 0 &&
+        (!ticket.salePeriod ||
+          (new Date(ticket.salePeriod.endDate!) > new Date() &&
+            new Date(ticket.salePeriod.startDate!) < new Date())),
+    })) as TicketDefinitionExtended[]
   } catch (e) {}
   return (
-    <HomeScreen events={events} productsForCategories={productsForCategories} />
+    <HomeScreen events={tickets} productsForCategories={productsForCategories} />
   );
 }
